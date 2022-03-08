@@ -1,0 +1,53 @@
+{
+  "anuncios": [
+    {
+      "name": "Clases de piano",
+      "offerAdvert": false,
+      "price": 25,
+      "description": "Busco un servicio de calidad y al mejor precio",
+      "paymentMethod": [
+        "cash",
+        "debit"
+      ],
+      "tags": [
+        "clases",
+        "musica"
+      ],
+      "experience": 2,
+      "advertImage": null
+    },
+    {
+      "name": "Clases de francés",
+      "offerAdvert": true,
+      "price": 15,
+      "description": "Ofrezco un servicio de calidad y al mejor precio",
+      "paymentMethod": [
+        "debit",
+        "credit"
+      ],
+      "tags": [
+        "clases",
+        "idiomas"
+      ],
+      "experience": 7,
+      "advertImage": null
+    },
+    {
+      "name": "Hacker ético",
+      "offerAdvert": true,
+      "price": 45,
+      "description": "Ofrezco un servicio de calidad y al mejor precio",
+      "paymentMethod": [
+        "cash",
+        "debit",
+        "credit"
+      ],
+      "tags": [
+        "informática",
+        "ciberseguridad"
+      ],
+      "experience": 8,
+      "advertImage": null
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "anuncios": [
+    {
+      "name": "Arreglo frigoríficos de todo tipo",
+      "offerAdvert": true,
+      "price": 38,
+      "description": "Ofrezco un servicio de calidad y al mejor precio",
+      "paymentMethod": [
+        "cash"
+      ],
+      "tags": [
+        "servicios domésticos"
+      ],
+      "experience": 12,
+      "advertImage": null
+    }
+  ]
+}
