@@ -48,7 +48,6 @@ app.use(
 
 //routes
 
-//TODO: ruta para el detalle del anuncio
 //TODO: ruta para mis anuncios favoritos
 //TODO: ruta para mis anuncios
 //TODO: ruta para crear un anuncio
