@@ -47,6 +47,14 @@ app.use(
 
 
 //routes
+
+//TODO: ruta para el detalle del anuncio
+//TODO: ruta para mis anuncios favoritos
+//TODO: ruta para mis anuncios
+//TODO: ruta para crear un anuncio
+//TODO: ruta para editar
+//TODO: ruta para borrar
+
 app.use("/auth/signup", require("./routes/usuarios"));
 app.use("/adverts", require("./routes/anuncios"));
 

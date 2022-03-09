@@ -7,6 +7,7 @@ const router = express.Router();
 const Usuario = require("../models/Usuario");
 
 //TODO: hacer el hash del password al crear el usuario
+//TODO: extender a subida de la imagen
 
 router.post("/" /* upload.single('foto'), */, async (req, res, next) => {
   try {

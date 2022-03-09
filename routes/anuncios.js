@@ -7,6 +7,7 @@ const { filter } = require('async');
 
 const router = express.Router();
 
+//GET /anuncios
 
 router.get('/', async function (req, res, next) {
 
@@ -52,8 +53,11 @@ router.get('/', async function (req, res, next) {
     }
 });
 
+//GET /anuncios/:id
+
 
 module.exports = router;
+
 
 // 'use strict'
 
