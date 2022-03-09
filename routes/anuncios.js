@@ -1,63 +1,70 @@
-'use strict';
-const express = require('express');
+"use strict";
+const express = require("express");
 const Anuncio = require("../models/Anuncio");
 
-const { nameFilter, priceRangeFilter } = require('../lib/utils');
-const { filter } = require('async');
+const { nameFilter, priceRangeFilter } = require("../lib/utils");
+const { filter } = require("async");
 
 const router = express.Router();
 
 //GET /anuncios
 
-router.get('/', async function (req, res, next) {
+router.get("/", async function (req, res, next) {
+  try {
+    const skip = parseInt(req.query.skip);
+    const limit = parseInt(req.query.limit);
 
-    try {
+    const select = req.query.select;
 
-        const skip = parseInt(req.query.skip);
-        const limit = parseInt(req.query.limit);
-   
-        const select = req.query.select;
+    const filters = {};
 
-        const filters = {};
-        
-        const name = req.query.name;
-        nameFilter(name, filters);       //filtro auxiliar por primeras letras del nombre
+    const name = req.query.name;
+    nameFilter(name, filters); //filtro auxiliar por primeras letras del nombre
 
-        const offerAdvert = req.query.offeradvert;
-        console.log(req.query.offerAdvert);
-        if (offerAdvert) filters.offerAdvert = offerAdvert;
+    const offerAdvert = req.query.offeradvert;
+    console.log(req.query.offerAdvert);
+    if (offerAdvert) filters.offerAdvert = offerAdvert;
 
-        const price = req.query.price;
-        priceRangeFilter(price, filters); //filtro auxiliar para el rango de precios
+    const price = req.query.price;
+    priceRangeFilter(price, filters); //filtro auxiliar para el rango de precios
 
-        const paymentMethod = req.query.paymentmethod;
-        if (paymentMethod) filters.paymentMethod = paymentMethod;
+    const paymentMethod = req.query.paymentmethod;
+    if (paymentMethod) filters.paymentMethod = paymentMethod;
 
-        const tags = req.query.tags;
-        if (tags) filters.tags = tags;
+    const tags = req.query.tags;
+    if (tags) filters.tags = tags;
 
-        const experience = req.query.experience;
-        if (experience) filters.experience = experience;
+    const experience = req.query.experience;
+    if (experience) filters.experience = experience;
 
-        //TODO: falta el filtro de advertCreator
+    //TODO: falta el filtro de advertCreator
 
-        const adverts = await Anuncio.customFind(filters, skip, limit,/*  sort */ select);
+    const adverts = await Anuncio.customFind(
+      filters,
+      skip,
+      limit,
+      /*  sort */ select
+    );
 
-
-        res.json({ result: adverts });
-    }
-
-
-    catch (err) {
-        next(err);
-    }
+    res.json({ result: adverts });
+  } catch (err) {
+    next(err);
+  }
 });
 
 //GET /anuncios/:id
 
+router.get("/:id", async function (req, res, next) {
+  try {
+    const advertId = req.params.id;
+    const advert = await Anuncio.find({ _id: advertId });
+    res.json({ result: advert });
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
-
 
 // 'use strict'
 
