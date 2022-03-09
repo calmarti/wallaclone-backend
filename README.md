@@ -50,3 +50,9 @@ Loading...
 ### -Query por tags
 
     GET /anuncios?tags=nombredecategoria
+    
+### -Query por medio de pago
+
+    GET /anuncios?paymentmethod=nombredelmediodepago
+    
+    
