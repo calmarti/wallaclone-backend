@@ -12,22 +12,30 @@ GET /adverts
 ```sh
 POST /auth/signup
 ```
+## Detalle del anuncio
+
+    GET /adverts/id
+
+Nota: en `ObjectId` el id es el string solamente
+
 ## Resto de endpoints
 ```sh
 Loading...
 ```
 
-## Para probar llamadas al api
+## Para hacer llamadas al API con anuncios de prueba:
 
 ### -Crear los anuncios mocks en `/pruebas/sample.json` 
 
     npm run installDB
+
+## Para hacer queries:    
     
-## -Query por nombre (regex)
+### -Query por nombre (regex)
 
     GET /anuncios?name=palabraclave
     
-## -Query por rango de precios 
+### -Query por rango de precios 
     
     GET /anuncios?price=preciomininimo-preciomaximo
   
@@ -35,10 +43,10 @@ Loading...
     
     GET /anuncios?price=preciominimo-
     
-## -Query por tipo de anuncio (ofrece o busca)
+### -Query por tipo de anuncio (ofrece o busca)
 
     GET /anuncios?offeradvert=boolean
 
-## -Query por tags
+### -Query por tags
 
     GET /anuncios?tags=nombredecategoria
