@@ -16,9 +16,9 @@ const anuncioSchema = mongoose.Schema({
   paymentMethod: { type: [String] },
   tags: { type: [String] },
   experience: { type: Number },
-  // advertCreator: {type: ObjectId},       //TODO: research: como vincular advertCreator con _id
+  // advertCreator: {type: ObjectId},       
   advertImage: { type: String },
-  createdBy: {type: {String}}
+  createdBy: {type: {String} }               //TODO: research: como vincular createBy con _id
   // publishState: {type: Boolean},
   // underlinePart: {type: [String] },
 });

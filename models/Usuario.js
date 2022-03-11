@@ -8,20 +8,22 @@ const mongoose = require("mongoose");
 var hash = require("hash.js");
 
 const usuarioSchema = mongoose.Schema({
-  userName: { type: String, unique: true, index: true},
-  email: { type: String, unique: true },
-  name: { type: String },
-  password: { type: String },
+  userName: { type: String,  required: true, unique: true, index: true },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true  },
+  password: { type: String, required: true },
   // offer: { type: Boolean },
-  phone: { type: Number },
+  phone: { type: Number, required:true },
+  description: { type: String, required: true },
   url: { type: String },
-  description: { type: String },
-  rating: { type: Number },
   // userImage: { type: File },
+  // rating: { type: Number },
   // favorites: { type: [ObjectId] },
+  // cv: { type:String } //si da tiempo
 });
 
 usuarioSchema.statics.hashPassword = function (plain) {
+  console.log("plain", plain)
   return hash.sha256().update(plain).digest("hex");
 };
 
@@ -30,7 +32,6 @@ usuarioSchema.set("timestamps", true);
 var Usuario = mongoose.model("Usuario", usuarioSchema);
 
 module.exports = Usuario;
-
 
 //TODO actualizar usuarioSchema
 //TODO crear esquema perfil
