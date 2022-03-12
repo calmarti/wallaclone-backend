@@ -18,7 +18,7 @@ const anuncioSchema = mongoose.Schema({
   experience: { type: Number },
   // advertCreator: {type: ObjectId},       
   advertImage: { type: String },
-  createdBy: {type: {String} }               //TODO: research: como vincular createBy con _id
+  // createdBy: {type: {String} }               //TODO: research: como vincular createBy con _id
   // publishState: {type: Boolean},
   // underlinePart: {type: [String] },
 });

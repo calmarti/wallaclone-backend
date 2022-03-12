@@ -1,7 +1,6 @@
 "use strict";
 
-//TODO: ¿ponemos un atributo 'required'?
-//TODO: crear el hash de la contraseña
+
 //TODO: implementar campo 'favorites' de tipo [ObjectId] (buscar type equivalente a ObjectId)
 
 const mongoose = require("mongoose");

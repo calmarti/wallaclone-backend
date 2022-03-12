@@ -22,7 +22,7 @@ router.get("/", async function (req, res, next) {
     nameFilter(name, filters); //filtro auxiliar por primeras letras del nombre
 
     const offerAdvert = req.query.offeradvert;
-    console.log(req.query.offerAdvert);
+  
     if (offerAdvert) filters.offerAdvert = offerAdvert;
 
     const price = req.query.price;
@@ -46,7 +46,7 @@ router.get("/", async function (req, res, next) {
       /*  sort */ select
     );
 
-    res.json({ result: adverts });
+    res.json(adverts);
   } catch (err) {
     next(err);
   }
