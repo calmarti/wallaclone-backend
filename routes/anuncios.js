@@ -1,12 +1,21 @@
 "use strict";
 const express = require("express");
 const Anuncio = require("../models/Anuncio");
-
+const regexp = require('regexp')
 const { nameFilter, priceRangeFilter } = require("../lib/utils");
 const { filter } = require("async");
 
 const router = express.Router();
 
+/*
+router.get("/all?:e", async function (req, res, next) {
+  try {
+    res.send(req.query.e)
+  } catch (err) {
+    next(err);
+  }
+})
+*/
 //GET /anuncios
 
 router.get("/", async function (req, res, next) {
@@ -18,7 +27,7 @@ router.get("/", async function (req, res, next) {
 
     const filters = {};
 
-    const name = req.query.name;
+    const name = req.query.name
     nameFilter(name, filters); //filtro auxiliar por primeras letras del nombre
 
     const offerAdvert = req.query.offeradvert;
@@ -36,6 +45,9 @@ router.get("/", async function (req, res, next) {
 
     const experience = req.query.experience;
     if (experience) filters.experience = experience;
+
+    const allads = req.query.allads
+    if (allads) filters.allads = res.send(allads);
 
     //TODO: falta el filtro de advertCreator
 
@@ -63,6 +75,7 @@ router.get("/:id", async function (req, res, next) {
     next(error);
   }
 });
+
 
 module.exports = router;
 
