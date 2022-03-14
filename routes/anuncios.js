@@ -7,15 +7,6 @@ const { filter } = require("async");
 
 const router = express.Router();
 
-/*
-router.get("/all?:e", async function (req, res, next) {
-  try {
-    res.send(req.query.e)
-  } catch (err) {
-    next(err);
-  }
-})
-*/
 //GET /anuncios
 
 router.get("/", async function (req, res, next) {
