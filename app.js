@@ -21,6 +21,59 @@ require("./models/Anuncio");
 
 const app = express();
 
+//chat BEA//
+/*
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', ['http://localhost:5000', 'http://localhost:5000']);
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.header('Access-Control-Allow-Credentials', 'true'),
+  res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+  next();
+});
+*/
+
+const http = require('http')
+const servidor = http.createServer(app)
+const socketio = require("socket.io");
+
+const io = socketio(servidor, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ["GET", "POST"],
+    credentials: true,
+  }
+});
+
+//Funcionalidad de socket.io en el servidor
+io.on("connection", (socket) => {
+  let nombre;
+
+  socket.on("conectado", (nomb) => {
+    nombre = nomb;
+    //socket.broadcast.emit manda el mensaje a todos los clientes excepto al que ha enviado el mensaje
+    socket.broadcast.emit("mensajes", {
+      nombre: nombre,
+      mensaje: `${nombre} ha entrado en la sala del chat`,
+    });
+  });
+
+  socket.on("mensaje", (nombre, mensaje) => {
+    //io.emit manda el mensaje a todos los clientes conectados al chat
+    io.emit("mensajes", { nombre, mensaje });
+  });
+
+  socket.on("disconnect", () => {
+    io.emit("mensajes", {
+      servidor: "Servidor",
+      mensaje: `${nombre} ha abandonado la sala`,
+    });
+  });
+});
+
+servidor.listen(5000, () => console.log("Servidor inicializado"));
+//CHAT BEA FIN //
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -34,17 +87,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // app.use(i18n.init);
-
-
-app.use(
-  cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  })
-);
-
 
 //routes
 
