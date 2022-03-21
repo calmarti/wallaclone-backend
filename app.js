@@ -44,7 +44,6 @@ app.use(
 //routes
 
 app.use('/auth/', require('./routes/users'));
-app.use('/auth/', require('./routes/users'));
 app.use('/adverts', require('./routes/adverts'));
 
 //const router = require('./routes/adverts');
