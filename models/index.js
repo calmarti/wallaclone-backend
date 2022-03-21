@@ -1,6 +1,6 @@
 module.exports = {
-  mongoose: require("mongoose"),
-  Anuncio: require("./Anuncio"),
-  Usuario: require("./Usuario"),
-  connectMongoose: require("./connectMongoose")
+  mongoose: require('mongoose'),
+  connectMongoose: require('./connectMongoose'),
+  Advert: require('./Advert'),
+  User: require('./User'),
 };
