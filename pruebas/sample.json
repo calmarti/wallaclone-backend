@@ -1,53 +1,40 @@
 {
-  "anuncios": [
+  "adverts": [
     {
-      "name": "Clases de piano",
+      "name": "Clases de Piano",
       "offerAdvert": false,
       "price": 25,
       "description": "Busco un servicio de calidad y al mejor precio",
-      "paymentMethod": [
-        "cash",
-        "debit"
-      ],
-      "tags": [
-        "clases",
-        "musica"
-      ],
+      "paymentMethods": ["cash", "debit"],
+      "tags": ["clases", "musica"],
       "experience": 2,
-      "advertImage": null
+      "advertImage": null,
+      "createdBy": "Usuario Prueba",
+      "updatedBy": "Usuario Prueba"
     },
     {
-      "name": "Clases de francés",
+      "name": "Clases de Francés",
       "offerAdvert": true,
       "price": 15,
       "description": "Ofrezco un servicio de calidad y al mejor precio",
-      "paymentMethod": [
-        "debit",
-        "credit"
-      ],
-      "tags": [
-        "clases",
-        "idiomas"
-      ],
+      "paymentMethods": ["debit", "credit"],
+      "tags": ["clases", "idiomas"],
       "experience": 7,
-      "advertImage": null
+      "advertImage": null,
+      "createdBy": "Usuario Prueba",
+      "updatedBy": "Usuario Prueba"
     },
     {
-      "name": "Hacker ético",
+      "name": "Hacker Ético",
       "offerAdvert": true,
       "price": 45,
       "description": "Ofrezco un servicio de calidad y al mejor precio",
-      "paymentMethod": [
-        "cash",
-        "debit",
-        "credit"
-      ],
-      "tags": [
-        "informática",
-        "ciberseguridad"
-      ],
+      "paymentMethods": ["cash", "debit", "credit"],
+      "tags": ["informática", "ciberseguridad"],
       "experience": 8,
-      "advertImage": null
+      "advertImage": null,
+      "createdBy": "Usuario Prueba",
+      "updatedBy": "Usuario Prueba"
     }
   ]
 }
