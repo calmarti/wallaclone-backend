@@ -22,7 +22,7 @@ router.get('/', async function (req, res, next) {
 
     const select = req.query.select;
 
-    const filters = { publishState: true };
+    const filters = { publishState: true };   
 
     const name = req.query.name;
     // str = name.replace(/[aeiouèéêëáàäâìíîïòóôöùúûü]/, '.');
@@ -102,8 +102,8 @@ router.post(
         updatedBy: user.name,
         ...advertParams,
       });
-      await advert.setPicture(req.file);
-      const saved = await advert.save();
+      // await advert.setPicture(req.file);   //comentado para que funcione mientras no haya subida de imagen desde el front
+      const saved = await advert.save();    
       res.json({ ok: true, result: saved });
     } catch (err) {
       res.status(500).json({ ok: false, result: err.message });
