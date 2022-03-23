@@ -117,9 +117,9 @@ router.post(
   }
 );
 
-//PUT /adverts/update_favorites Marca/Desmarca Anuncio como Favorito
+//PUT /adverts/update-favorite Marca/Desmarca Anuncio como Favorito
 
-router.put('/update_favorites/', jwtAuth(), async (req, res, next) => {
+router.put('/update-favorite/', jwtAuth(), async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.decodedUser._id });
     const { advertId, setAsFavorite } = req.body;
