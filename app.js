@@ -101,10 +101,6 @@ app.use('/auth/', require('./routes/users'));
 app.use('/adverts', require('./routes/adverts'));
 app.use('/chat', require('./routes/chat'));
 
-//const router = require('./routes/adverts');
-
-//app.use('/adverts', advertRouter.unprotected);
-//app.use('/adverts', jwtAuth(), advertRouter.protected);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
