@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 const express = require('express');
 const upload = require('../lib/multerConfig');
 const Advert = require('../models/Advert');
@@ -9,6 +11,7 @@ const { nameFilter, priceRangeFilter } = require('../lib/utils');
 const { sanitizeAdvertParams } = require('../utils/sanitize_params');
 const jwtAuth = require('../lib/jwtAuth');
 const { filter } = require('async');
+const preloadedTags = require('../preloadedTags');
 
 const router = express.Router();
 //const protectedRouter = express.Router();
@@ -60,14 +63,15 @@ router.get('/', async function (req, res, next) {
 });
 
 //GET /adverts/tags Devuelve los tags usados en los anuncios existentes
+
 //Otra opción: usar tags predefinidos (el usuario no podría crearlos)
 
 router.get('/tags', async (req, res, next) => {
   try {
-    // const tags = await Advert.allowedTags()
-    const tags = await Advert.tagsList();
-    res.json({ ok: true, result: tags });
-    // res.json({ ok: true, allowedTags: Anuncio.allowedTags() })
+    const tags = await Advert.allowedTags()
+    // const tags = await Advert.tagsList();
+    // res.json({ ok: true, result: tags });
+    res.json({ ok: true, allowedTags: Advert.allowedTags(preloadedTags) })
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
   }
