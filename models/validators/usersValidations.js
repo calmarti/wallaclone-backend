@@ -2,11 +2,11 @@
 const userNameValidations = [
   {
     validator: (name) => name !== '',
-    message: 'Debe contener nombre de usuario',
+    message: 'Debe contener user de usuario',
   },
   {
     validator: (name) => name.length >= 6,
-    message: 'El nombre de usuario debe ser >= a 6 caracteres',
+    message: 'El user de usuario debe ser >= a 6 caracteres',
   },
 ];
 

@@ -2,7 +2,7 @@
 const nameValidations = [
   {
     validator: (name) => name !== '',
-    message: 'Debe contener nombre',
+    message: 'Debe contener user',
   },
 ];
 

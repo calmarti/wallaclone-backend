@@ -25,7 +25,6 @@ const messageSchema = Schema({
     chatId: {type: String}
 });
 
-
 const chatSchema = Schema({
     chatId: { type: String, unique: true, index: true },
     chatSeller: {type: String},

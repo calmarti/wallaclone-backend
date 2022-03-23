@@ -31,7 +31,7 @@ Loading...
 
 ## Para hacer queries:    
     
-### -Query por nombre (regex)
+### -Query por user (regex)
 
     GET /anuncios?name=palabraclave
     
@@ -49,10 +49,10 @@ Loading...
 
 ### -Query por tags
 
-    GET /anuncios?tags=nombredecategoria
+    GET /anuncios?tags=userdecategoria
     
 ### -Query por medio de pago
 
-    GET /anuncios?paymentmethod=nombredelmediodepago
+    GET /anuncios?paymentmethod=userdelmediodepago
     
     

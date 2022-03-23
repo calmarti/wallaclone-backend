@@ -45,26 +45,27 @@ const io = socketio(servidor, {
 
 //Funcionalidad de socket.io en el servidor
 io.on("connection", (socket) => {
-  let nombre;
-
-  socket.on("conectado", (nomb) => {
-    nombre = nomb;
-    //socket.broadcast.emit manda el mensaje a todos los clientes excepto al que ha enviado el mensaje
-    socket.broadcast.emit("mensajes", {
-      nombre: nombre,
-      mensaje: `${nombre} ha entrado en la sala del chat`,
+  let user;
+  console.dir(socket)
+  socket.on("conectado", (info) => {
+    
+    user = info[0];
+    //socket.broadcast.emit manda el message a todos los clientes excepto al que ha enviado el message
+    socket.emit("messages", {
+      user: user,
+      message: `${user} ha entrado en la sala del chat`,
     });
   });
 
-  socket.on("mensaje", (nombre, mensaje) => {
-    //io.emit manda el mensaje a todos los clientes conectados al chat
-    io.emit("mensajes", { nombre, mensaje });
+  socket.on("message", (user, message) => {
+    //io.emit manda el message a todos los clientes conectados al chat
+    io.emit("messages", { user, message });
   });
 
   socket.on("disconnect", () => {
-    io.emit("mensajes", {
+    io.emit("messages", {
       servidor: "Servidor",
-      mensaje: `${nombre} ha abandonado la sala`,
+      message: `${user} ha abandonado la sala`,
     });
   });
 });

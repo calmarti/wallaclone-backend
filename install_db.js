@@ -14,7 +14,7 @@ main().catch((err) => console.error('Error!', err));
 async function main() {
   // Si buscáis en la doc de mongoose (https://mongoosejs.com/docs/connections.html),
   // veréis que mongoose.connect devuelve una promesa que podemos exportar en connectMongoose
-  // Espero a que se conecte la BD (para que los mensajes salgan en orden)
+  // Espero a que se conecte la BD (para que los messages salgan en orden)
   await connectMongoose;
 
   const answer = await askUser(

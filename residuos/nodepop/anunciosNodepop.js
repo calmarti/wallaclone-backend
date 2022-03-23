@@ -37,8 +37,8 @@ router.get('/', (req, res, next) => {
     }
   }
 
-  if (typeof req.query.nombre !== 'undefined') {
-    filters.nombre = new RegExp('^' + req.query.nombre, 'i')
+  if (typeof req.query.user !== 'undefined') {
+    filters.user = new RegExp('^' + req.query.user, 'i')
   }
 
   Anuncio.list(filters, start, limit, sort, includeTotal).then(anuncios => {

@@ -14,23 +14,24 @@ router.post("/create", async function (req, res, next) {
   }
 });
 
+router.get("/:id", async function (req, res, next) {
+  try {
+    const MSGchatId = req.params.id;
+    const chatinfo = await Message.find({chatId: MSGchatId}, function (err, chats) {
+      res.send(chats);
+      console.log(chats)
+  });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/", async function (req, res, next) {
   try {
     const chatinfo = await Chat.find({}, function (err, chats) {
       res.send(chats);
   });
     //res.json(newChat);
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.get("/:id", async function (req, res, next) {
-  try {
-    const MSGchatId = req.params.id;
-    const chatinfo = await Message.find({chatId: MSGchatId}, function (err, chats) {
-      res.send(chats);
-  });
   } catch (err) {
     next(err);
   }

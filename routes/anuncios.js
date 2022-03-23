@@ -20,7 +20,7 @@ router.get("/", async function (req, res, next) {
 
     const name = req.query.name
     let str = name.replace(/[aeiouèéêëáàäâìíîïòóôöùúûü]/,".");
-    nameFilter(str, filters); //filtro auxiliar por primeras letras del nombre
+    nameFilter(str, filters); //filtro auxiliar por primeras letras del user
 
     const offerAdvert = req.query.offeradvert;
   
