@@ -48,10 +48,15 @@ const advertSchema = Schema({
 advertSchema.set('timestamps', true);
 
 //Valores predefinidos de los tags
-anuncioSchema.statics.allowedTags = function () {
-  return ['informática', 'clases', 'mantenimiento y reparaciones', 'asesorías', 'otros']
-}
-
+advertSchema.statics.allowedTags = function () {
+  return [
+    'informática',
+    'clases',
+    'mantenimiento y reparaciones',
+    'asesorías',
+    'otros',
+  ];
+};
 
 //Corre las validaciones al actualizar un anuncio para evitar que no se cumplan
 
@@ -86,7 +91,6 @@ advertSchema.methods.setPicture = async function ({
   await fs.copy(imagePath, imagePublicPath);
 
   this.advertImage = imageOriginalName;
-
   // Create thumbnail
   thumbnailRequester.send({ type: 'createThumbnail', image: imagePublicPath });
 };
@@ -95,7 +99,6 @@ advertSchema.methods.setPicture = async function ({
 
 advertSchema.statics.cargaJson = async function (fichero) {
   const data = await fsPromises.readFile(fichero, { encoding: 'utf8' });
-  console.log('data', data);
   if (!data) {
     throw new Error(fichero + ' está vacio!');
   }

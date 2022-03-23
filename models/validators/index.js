@@ -14,6 +14,14 @@ const {
   passwordValidations,
 } = require('./usersValidations');
 
+const {
+  profileNameValidations,
+  phoneValidations,
+  userPictureValidations,
+  ratingValidations,
+  urlValidations,
+} = require('./usersProfilesValidations');
+
 module.exports = {
   nameValidations,
   priceValidations,
@@ -25,4 +33,9 @@ module.exports = {
   userNameValidations,
   emailValidations,
   passwordValidations,
+  profileNameValidations,
+  phoneValidations,
+  userPictureValidations,
+  ratingValidations,
+  urlValidations,
 };

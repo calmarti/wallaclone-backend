@@ -73,11 +73,6 @@ router.get('/tags', async (req, res, next) => {
   }
 });
 
-
- 
-
-
-
 //GET /adverts/favorites Devuelve Avisos favoritos de un usuario
 
 router.get('/favorites', jwtAuth(), async (req, res, next) => {
@@ -103,6 +98,7 @@ router.post(
   async (req, res, next) => {
     try {
       const advertParams = sanitizeAdvertParams(req.body);
+      console.log('advert', req.file);
       const user = await User.findOne({ _id: req.decodedUser._id });
       const advert = new Advert({
         advertCreator: req.decodedUser._id,
@@ -112,6 +108,7 @@ router.post(
       });
       await advert.setPicture(req.file);
       const saved = await advert.save();
+
       res.json({ ok: true, result: saved });
     } catch (err) {
       res.status(500).json({ ok: false, result: err.message });
