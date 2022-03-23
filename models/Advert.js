@@ -47,6 +47,12 @@ const advertSchema = Schema({
 
 advertSchema.set('timestamps', true);
 
+//Valores predefinidos de los tags
+anuncioSchema.statics.allowedTags = function () {
+  return ['informática', 'clases', 'mantenimiento y reparaciones', 'asesorías', 'otros']
+}
+
+
 //Corre las validaciones al actualizar un anuncio para evitar que no se cumplan
 
 advertSchema.pre('findOneAndUpdate', function (next) {

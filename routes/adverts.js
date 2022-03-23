@@ -60,15 +60,23 @@ router.get('/', async function (req, res, next) {
 });
 
 //GET /adverts/tags Devuelve los tags usados en los anuncios existentes
+//Otra opción: usar tags predefinidos (el usuario no podría crearlos)
 
 router.get('/tags', async (req, res, next) => {
   try {
+    // const tags = await Advert.allowedTags()
     const tags = await Advert.tagsList();
     res.json({ ok: true, result: tags });
+    // res.json({ ok: true, allowedTags: Anuncio.allowedTags() })
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
   }
 });
+
+
+ 
+
+
 
 //GET /adverts/favorites Devuelve Avisos favoritos de un usuario
 
