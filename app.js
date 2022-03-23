@@ -15,6 +15,7 @@ const cors = require('cors');
 require('./models/connectMongoose');
 require('./models/User');
 require('./models/Advert');
+require('./models/Chat');
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use(
 
 app.use('/auth/', require('./routes/users'));
 app.use('/adverts', require('./routes/adverts'));
+app.use('/chat', require('./routes/chat'));
 
 //const router = require('./routes/adverts');
 
