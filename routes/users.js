@@ -131,7 +131,7 @@ router.get(
         from: `Starkers <${process.env.MAILER_SENDER}>`,
         to: user.email,
         subject: 'Restablecer Contraseña',
-        html: `<h3>Restablecer Contraseña</h3><br> Para restablecer tu contraseña, haz click en el siguiente link: <a href="${process.env.FRONT_END_URL}:${process.env.FRONT_END_PORT}/restore-password?token=${token}">Restablecer Contraseña</a>`,
+        html: `<h3>Restablecer Contraseña</h3><br> Para restablecer tu contraseña, haz click en el siguiente link: <a href="http://${process.env.FRONT_END_URL}:${process.env.FRONT_END_PORT}/restore-password?token=${token}">Restablecer Contraseña</a>`,
       });
       res.json({
         ok: true,
