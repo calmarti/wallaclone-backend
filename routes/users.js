@@ -3,16 +3,7 @@
 const express = require('express');
 
 const upload = require('../lib/multerConfig');
-
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.MAILER_SENDER,
-    pass: process.env.MAILER_PASSWORD,
-  },
-});
+const { sendEmail } = require('../lib/mailer');
 
 const router = express.Router();
 const User = require('../models/User');
@@ -28,21 +19,12 @@ router.post('/signup', async (req, res, next) => {
     const fields = { ...req.body, password: hashedPassword };
     const newUser = await User.create(fields);
     if (newUser) {
-      transporter.sendMail(
-        {
-          from: `Starkers ${process.env.MAILER_SENDER}`,
-          to: newUser.email,
-          subject: 'Bienvenido a WallaClone',
-          html: '<h3>Bienvenido a WallaClone</h3><br><br> Gracias por registrarte en nuestra plataforma. Esperamos que disfrutes de esta herammienta que hemos puesto a tu disposición. <br><br> Cualquier duda, puedes contactarnos en keepcodingstarkers@gmail.com',
-        },
-        function (error, info) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        }
-      );
+      sendEmail({
+        from: `Starkers ${process.env.MAILER_SENDER}`,
+        to: newUser.email,
+        subject: 'Bienvenido a WallaClone',
+        html: '<h3>Bienvenido a WallaClone</h3><br><br> Gracias por registrarte en nuestra plataforma. Esperamos que disfrutes de esta herramienta que hemos puesto a tu disposición. <br><br> Cualquier duda, puedes contactarnos en keepcodingstarkers@gmail.com',
+      });
     }
     res.json({ ok: true, result: newUser });
   } catch (err) {
@@ -145,21 +127,12 @@ router.get(
       const user = await User.findOne({
         _id: decodedUser._id,
       });
-      transporter.sendMail(
-        {
-          from: `Starkers <${process.env.MAILER_SENDER}>`,
-          to: user.email,
-          subject: 'Restablecer Contraseña',
-          html: `<h3>Restablecer Contraseña</h3><br> Para restablecer tu contraseña, haz click en el siguiente link: <a href="${process.env.FRONT_END_URL}:${process.env.FRONT_END_PORT}/restore-password?token=${token}">Restablecer Contraseña</a>`,
-        },
-        function (error, info) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        }
-      );
+      sendEmail({
+        from: `Starkers <${process.env.MAILER_SENDER}>`,
+        to: user.email,
+        subject: 'Restablecer Contraseña',
+        html: `<h3>Restablecer Contraseña</h3><br> Para restablecer tu contraseña, haz click en el siguiente link: <a href="${process.env.FRONT_END_URL}:${process.env.FRONT_END_PORT}/restore-password?token=${token}">Restablecer Contraseña</a>`,
+      });
       res.json({
         ok: true,
         userId: user.id,
