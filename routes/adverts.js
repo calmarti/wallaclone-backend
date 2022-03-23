@@ -68,10 +68,10 @@ router.get('/', async function (req, res, next) {
 
 router.get('/tags', async (req, res, next) => {
   try {
-    const tags = await Advert.allowedTags()
+    const tags = await Advert.allowedTags(preloadedTags)
     // const tags = await Advert.tagsList();
     // res.json({ ok: true, result: tags });
-    res.json({ ok: true, allowedTags: Advert.allowedTags(preloadedTags) })
+    res.json(tags)
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
   }
