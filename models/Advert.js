@@ -35,7 +35,7 @@ const advertSchema = Schema({
   price: { type: Number, validate: priceValidations },
   paymentMethods: { type: [String], validate: paymentMethodsValidations },
   tags: { type: [String], validate: tagsValidations },
-  experience: { type: Number, validate: experienceValidations },
+  experience: { type: Number /* , validate: experienceValidations */ },
   advertImage: { type: String, pictureValidations },
   advertCreator: { type: ObjectId },
   createdBy: { type: { String } },
