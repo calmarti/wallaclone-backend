@@ -21,12 +21,14 @@ router.get("/info/:id", async function (req, res, next) {
     const MSGchatId = req.params.id;
     const chatinfo = await Chat.find({chatId: MSGchatId}, function (err, chats) {
       console.log("aqui los chats " + chats)
-      if (chats[0] == undefined){console.log("mal")}else{res.send([chats[0].chatSeller + ' , ' + chats[0].chatBuyer]);}
+      if (chats[0] == undefined){console.log("mal")}else{console.log(chats[0].chatSeller); res.send([chats[0].chatSeller, chats[0].chatBuyer]);}
   });
   } catch (err) {
     next(err);
   }
 });
+
+
 
 // Devuelve los mensajes de un chat
 router.get("/:id", async function (req, res, next) {
@@ -62,6 +64,13 @@ router.delete('/', async function (req, res, next) {
   }
 });
 
+router.delete('/mensajes', async function (req, res, next) {
+  try {
+    await Message.deleteMany({}, res.send("borrado"))
+  } catch (err) {
+    next(err);
+  }
+});
 // Crear MENSAJE
 router.post("/", async function (req, res, next) {
   try {
