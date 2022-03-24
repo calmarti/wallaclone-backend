@@ -24,7 +24,7 @@ const {
   paymentMethodsValidations,
 } = require('./validators');
 
-//TODO: research como crear automáticamente el advertCreator al crear el advert
+
 const Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
