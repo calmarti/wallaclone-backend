@@ -4,6 +4,7 @@ const {Chat, Message} = require("../models/Chat");
 
 const router = express.Router();
 
+// Crear chat
 router.post("/create", async function (req, res, next) {
   try {
     const fields = { ...req.body};
@@ -14,12 +15,26 @@ router.post("/create", async function (req, res, next) {
   }
 });
 
+// Devuelve los usuarios que pertenecen a un chat
+router.get("/info/:id", async function (req, res, next) {
+  try {
+    const MSGchatId = req.params.id;
+    const chatinfo = await Chat.find({chatId: MSGchatId}, function (err, chats) {
+      console.log("aqui los chats " + chats)
+      if (chats[0] == undefined){console.log("mal")}else{res.send([chats[0].chatSeller + ' , ' + chats[0].chatBuyer]);}
+  });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Devuelve los mensajes de un chat
 router.get("/:id", async function (req, res, next) {
+  console.log("aqui")
   try {
     const MSGchatId = req.params.id;
     const chatinfo = await Message.find({chatId: MSGchatId}, function (err, chats) {
       res.send(chats);
-      console.log(chats)
   });
   } catch (err) {
     next(err);
@@ -37,6 +52,8 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+
+//eliminar TODOS LOS CHATS
 router.delete('/', async function (req, res, next) {
   try {
     await Chat.deleteMany({}, res.send("borrado"))
@@ -45,6 +62,7 @@ router.delete('/', async function (req, res, next) {
   }
 });
 
+// Crear MENSAJE
 router.post("/", async function (req, res, next) {
   try {
    const fields = { ...req.body};

@@ -46,9 +46,11 @@ const io = socketio(servidor, {
 //Funcionalidad de socket.io en el servidor
 io.on("connection", (socket) => {
   let user;
-  console.dir(socket)
+  let iddef = ''
   socket.on("conectado", (info) => {
-    
+    iddef = info[1]
+    socket.join(info[1])
+    console.log("¡¡ INFO SALA !! " + info[1])
     user = info[0];
     //socket.broadcast.emit manda el message a todos los clientes excepto al que ha enviado el message
     socket.emit("messages", {
@@ -57,13 +59,14 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("message", (user, message) => {
+  socket.on("message", (user, message, id) => {
+    console.log("!!!!!!" + id)
     //io.emit manda el message a todos los clientes conectados al chat
-    io.emit("messages", { user, message });
+    io.to(id).emit("messages", { user, message });
   });
 
   socket.on("disconnect", () => {
-    io.emit("messages", {
+    io.to(iddef).emit("messages", {
       servidor: "Servidor",
       message: `${user} ha abandonado la sala`,
     });

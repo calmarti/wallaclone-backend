@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { token } = require('morgan');
 
 //TODO: extender a subida de la imagen
 
@@ -58,5 +59,28 @@ router.post('/signin', async (req, res, next) => {
     next(err);
   }
 });
+
+let chapuza = ""
+
+router.get('/chat/:id', (req, res, next) => {
+  try {
+    let id = req.params.id
+    const decodedJwt = jwt.decode(id, { complete: true });
+    chapuza = decodedJwt.payload.email
+    res.send(chapuza)
+    //res.send(decodedJwt.payload.email)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+router.get('/email', (req, res, next) => {
+  try {
+    res.send(chapuza)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 
 module.exports = router;
