@@ -1,31 +1,31 @@
-'use strict';
+"use strict";
 
 
 
-const express = require('express');
-const upload = require('../lib/multerConfig');
-const Advert = require('../models/Advert');
-const { User } = require('../models');
+const express = require("express");
+const upload = require("../lib/multerConfig");
+const Advert = require("../models/Advert");
+const { User } = require("../models");
 
-const { nameFilter, priceRangeFilter } = require('../lib/utils');
-const { sanitizeAdvertParams } = require('../utils/sanitize_params');
-const jwtAuth = require('../lib/jwtAuth');
-const { filter } = require('async');
-const preloadedTags = require('../preloadedTags');
+const { nameFilter, priceRangeFilter } = require("../lib/utils");
+const { sanitizeAdvertParams } = require("../utils/sanitize_params");
+const jwtAuth = require("../lib/jwtAuth");
+const { filter } = require("async");
+const preloadedTags = require("../preloadedTags");
 
 const router = express.Router();
 //const protectedRouter = express.Router();
 
 //GET /adverts
 
-router.get('/', async function (req, res, next) {
+router.get("/", async function (req, res, next) {
   try {
     const skip = parseInt(req.query.skip);
     const limit = parseInt(req.query.limit);
 
     const select = req.query.select;
 
-    const filters = { publishState: true };   
+    const filters = { publishState: true };
 
     const name = req.query.name;
     // str = name.replace(/[aeiouèéêëáàäâìíîïòóôöùúûü]/, '.');
@@ -66,25 +66,20 @@ router.get('/', async function (req, res, next) {
 
 //Otra opción: usar tags predefinidos (el usuario no podría crearlos)
 
-router.get('/tags', async (req, res, next) => {
+router.get("/tags", async (req, res, next) => {
   try {
-    const tags = await Advert.allowedTags(preloadedTags)
+    const tags = await Advert.allowedTags(preloadedTags);
     // const tags = await Advert.tagsList();
     // res.json({ ok: true, result: tags });
-    res.json(tags)
+    res.json(tags);
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
   }
 });
 
-
- 
-
-
-
 //GET /adverts/favorites Devuelve Avisos favoritos de un usuario
 
-router.get('/favorites', jwtAuth(), async (req, res, next) => {
+router.get("/favorites", jwtAuth(), async (req, res, next) => {
   try {
     const { query, decodedUser } = req;
     const user = await User.find({
@@ -101,21 +96,22 @@ router.get('/favorites', jwtAuth(), async (req, res, next) => {
 
 //POST /adverts/ Crear un nuevo Anuncio
 router.post(
-  '/',
+  "/",
   jwtAuth(),
-  upload.single('advertImage'),
+  upload.single("advertImage"),
   async (req, res, next) => {
     try {
-      const advertParams = sanitizeAdvertParams(req.body);
+      // const advertParams = sanitizeAdvertParams(req.body);
       const user = await User.findOne({ _id: req.decodedUser._id });
       const advert = new Advert({
         advertCreator: req.decodedUser._id,
-        createdBy: user.name,
-        updatedBy: user.name,
-        ...advertParams,
+        createdBy: user.userName,
+        updatedBy: user.userName,
+        ...req.body
+        // ...advertParams,
       });
       // await advert.setPicture(req.file);   //comentado para que funcione mientras no haya subida de imagen desde el front
-      const saved = await advert.save();    
+      const saved = await advert.save();
       res.json({ ok: true, result: saved });
     } catch (err) {
       res.status(500).json({ ok: false, result: err.message });
@@ -126,7 +122,7 @@ router.post(
 
 //PUT /adverts/update_favorites Marca/Desmarca Anuncio como Favorito
 
-router.put('/update_favorites/', jwtAuth(), async (req, res, next) => {
+router.put("/update_favorites/", jwtAuth(), async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.decodedUser._id });
     const { advertId, setAsFavorite } = req.body;
@@ -153,7 +149,7 @@ router.put('/update_favorites/', jwtAuth(), async (req, res, next) => {
     if (!updatedUser) {
       res.status(404).json({
         ok: false,
-        error: 'No se pudo actualizar o no se encontró el usuario',
+        error: "No se pudo actualizar o no se encontró el usuario",
       });
       return;
     }
@@ -166,7 +162,7 @@ router.put('/update_favorites/', jwtAuth(), async (req, res, next) => {
 
 //PUT /adverts/delete/:id Borrado lógico de anuncio
 
-router.put('/delete/', jwtAuth(), async (req, res, next) => {
+router.put("/delete/", jwtAuth(), async (req, res, next) => {
   try {
     const { advertId } = req.body;
     const user = await User.findOne({ _id: req.decodedUser._id });
@@ -183,7 +179,7 @@ router.put('/delete/', jwtAuth(), async (req, res, next) => {
     if (!deletedAdvert) {
       res.status(404).json({
         ok: false,
-        error: 'No se pudo eliminar o no se encontró el anuncio',
+        error: "No se pudo eliminar o no se encontró el anuncio",
       });
       return;
     }
@@ -196,7 +192,7 @@ router.put('/delete/', jwtAuth(), async (req, res, next) => {
 
 //PUT /adverts/:id Modificar un Anuncio
 
-router.put('/:id', jwtAuth(), async (req, res, next) => {
+router.put("/:id", jwtAuth(), async (req, res, next) => {
   try {
     const advertParams = sanitizeAdvertParams(req.body);
     const user = await User.findOne({ _id: req.decodedUser._id });
@@ -211,7 +207,7 @@ router.put('/:id', jwtAuth(), async (req, res, next) => {
     if (!updatedAdvert) {
       res.status(404).json({
         ok: false,
-        error: 'No se pudo actualizar o no se encontró el anuncio',
+        error: "No se pudo actualizar o no se encontró el anuncio",
       });
       return;
     }
@@ -223,7 +219,7 @@ router.put('/:id', jwtAuth(), async (req, res, next) => {
 
 //GET /adverts/:id Consulta un anuncio por su _id
 
-router.get('/:id', async function (req, res, next) {
+router.get("/:id", async function (req, res, next) {
   try {
     const advertId = req.params.id;
     const advert = await Advert.find({ _id: advertId });

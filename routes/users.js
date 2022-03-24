@@ -45,7 +45,7 @@ router.post('/signin', async (req, res, next) => {
       { _id: user._id, ...email_userName },
       process.env.JWT_SECRET,
       {
-        expiresIn: '2d',
+        expiresIn: '15d',
       },
       (err, token) => {
         if (err) {
