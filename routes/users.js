@@ -14,28 +14,29 @@ router.post('/signup' /* upload.single('foto'), */, async (req, res, next) => {
     const hashedPassword = User.hashPassword(req.body.password);
     const fields = { ...req.body, password: hashedPassword };
     const newUser = await User.create(fields);
-
-    // await anuncio.setFoto(req.file) // save image
-    // const saved = await usuario.save();
-
     res.json({ ok: true, result: newUser });
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
+    console.log(err)
   }
 });
 
-router.post('/signin', async (req, res, next) => {
+//router.post('/signin', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
+  //console.log(req.body)
   try {
     let email_userName = { email: req.body.email };
     if (!req.body.email) {
-      email_userName = { userName: req.body.userName };
+      email_userName = { userName: req.body.username };
     }
     const password = req.body.password;
     const hashedPassword = User.hashPassword(password);
 
     const user_credentials = { ...email_userName, password: hashedPassword };
+    //console.log(user_credentials)
     const user = await User.findOne(user_credentials);
 
+    console.log(user)
     if (!user) {
       res.status(500).json({ ok: false, error: 'invalid credentials' });
       return;
@@ -51,7 +52,7 @@ router.post('/signin', async (req, res, next) => {
         if (err) {
           return next(err);
         }
-        res.json({ ok: true, token: token, userId: user._id });
+        res.json({ok: true, token: token, userName: user.userName});
       }
     );
   } catch (err) {
