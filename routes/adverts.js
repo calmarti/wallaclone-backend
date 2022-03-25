@@ -101,6 +101,7 @@ router.post(
   upload.single("advertImage"),
   async (req, res, next) => {
     try {
+      console.log('file', req.file)
       // const advertParams = sanitizeAdvertParams(req.body);     // sanitazion comentado temporalmente para poder crear anuncio 
       const user = await User.findOne({ _id: req.decodedUser._id });
       const advert = new Advert({
@@ -110,11 +111,11 @@ router.post(
         ...req.body
         // ...advertParams,
       });
-      // await advert.setPicture(req.file);   // comentado para que funcione mientras no haya subida de imagen desde el front
+      await advert.setPicture(req.file);   // comentado para que funcione mientras no haya subida de imagen desde el front
       const saved = await advert.save();
       res.json({ ok: true, result: saved });
     } catch (err) {
-      res.status(500).json({ ok: false, result: err.message });
+      res.status(500).json({ ok: false, result: err });
       //next(err);
     }
   }
