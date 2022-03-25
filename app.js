@@ -39,17 +39,16 @@ io.on("connection", (socket) => {
   socket.on("conectado", (info) => {
     iddef = info[1]
     socket.join(info[1])
-    console.log("¡¡ INFO SALA !! " + info[1])
     user = info[0];
     //socket.broadcast.emit manda el message a todos los clientes excepto al que ha enviado el message
     socket.emit("messages", {
       user: user,
-      message: `${user} ha entrado en la sala del chat`,
+      message: `${user} se ha conectado`,
+      chatConexion: true,
     });
   });
 
   socket.on("message", (user, message, id) => {
-    console.log("!!!!!!" + id)
     //io.emit manda el message a todos los clientes conectados al chat
     io.to(id).emit("messages", { user, message });
   });
@@ -58,6 +57,7 @@ io.on("connection", (socket) => {
     io.to(iddef).emit("messages", {
       servidor: "Servidor",
       message: `${user} ha abandonado la sala`,
+      chatConexion: false,
     });
   });
 });
