@@ -52,6 +52,10 @@ advertSchema.statics.allowedTags = function (preloadedTags) {
   return preloadedTags;
 }
 
+//Valores predefinidos de los paymentMethods
+advertSchema.statics.allowedPaymentMethods = function (preloadedPaymentMethods) {
+  return preloadedPaymentMethods;
+}
 
 //Corre las validaciones al actualizar un anuncio para evitar que no se cumplan
 
@@ -85,7 +89,8 @@ advertSchema.methods.setPicture = async function ({
   const imagePublicPath = path.join(__dirname, '../uploads', imageOriginalName);
   await fs.copy(imagePath, imagePublicPath);
 
-  this.advertImage = imageOriginalName;
+  // this.advertImage = imageOriginalName;
+  this.advertImage = imagePath;
 
   // Create thumbnail
   thumbnailRequester.send({ type: 'createThumbnail', image: imagePublicPath });

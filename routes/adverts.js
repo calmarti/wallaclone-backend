@@ -1,7 +1,5 @@
 "use strict";
 
-
-
 const express = require("express");
 const upload = require("../lib/multerConfig");
 const Advert = require("../models/Advert");
@@ -11,7 +9,10 @@ const { nameFilter, priceRangeFilter } = require("../lib/utils");
 const { sanitizeAdvertParams } = require("../utils/sanitize_params");
 const jwtAuth = require("../lib/jwtAuth");
 const { filter } = require("async");
-const preloadedTags = require("../preloadedTags");
+const {
+  tags: preloadedTags,
+  paymentMethods: preloadedPaymentMethods,
+} = require("../preloadedValues");
 
 const router = express.Router();
 //const protectedRouter = express.Router();
@@ -62,16 +63,28 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-//GET /adverts/tags Devuelve los tags usados en los anuncios existentes
+//GET /adverts/tags Devuelve los tags usados en los anuncios existentes (líneas comentadas)
 
-//Otra opción: usar tags predefinidos (el usuario no podría crearlos)
+//opción actual: tags predefinidos (el usuario no puede crearlos)
 
 router.get("/tags", async (req, res, next) => {
   try {
     const tags = await Advert.allowedTags(preloadedTags);
     // const tags = await Advert.tagsList();
-    // res.json({ ok: true, result: tags });
-    res.json(tags);
+    res.json({ ok: true, tags });
+  } catch (err) {
+    res.status(500).json({ ok: false, result: err.message });
+  }
+});
+
+//GET /adverts/paymentMethods
+
+router.get("/paymentMethods", async (req, res, next) => {
+  try {
+    const paymentMethods = await Advert.allowedPaymentMethods(
+      preloadedPaymentMethods
+    );
+    res.json({ ok: true, result: paymentMethods });
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
   }
@@ -101,17 +114,17 @@ router.post(
   upload.single("advertImage"),
   async (req, res, next) => {
     try {
-      console.log('file', req.file)
-      // const advertParams = sanitizeAdvertParams(req.body);     // sanitazion comentado temporalmente para poder crear anuncio 
+      console.log("file", req.file);
+      // const advertParams = sanitizeAdvertParams(req.body);     // sanitazion comentado temporalmente para poder crear anuncio
       const user = await User.findOne({ _id: req.decodedUser._id });
       const advert = new Advert({
         advertCreator: req.decodedUser._id,
         createdBy: user.userName,
         updatedBy: user.userName,
-        ...req.body
+        ...req.body,
         // ...advertParams,
       });
-      await advert.setPicture(req.file);   // comentado para que funcione mientras no haya subida de imagen desde el front
+      await advert.setPicture(req.file); // comentado para que funcione mientras no haya subida de imagen desde el front
       const saved = await advert.save();
       res.json({ ok: true, result: saved });
     } catch (err) {
