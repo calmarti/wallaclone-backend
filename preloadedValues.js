@@ -14,10 +14,10 @@ const tags = [
 ];
 
 const paymentMethods = [
-  "cash",
-  "debit",
-  "credit",
-  "paypal",
+  "Efectivo",
+  "Débito",
+  "Crédito",
+  "Paypal",
 ];
 
 module.exports = { tags, paymentMethods };

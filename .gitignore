@@ -34,6 +34,6 @@ build/Release
 
 .idea
 
-uploads
-public/images/anuncios
+/uploads
+
 
