@@ -63,21 +63,21 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-//GET /adverts/tags Devuelve los tags usados en los anuncios existentes (líneas comentadas)
+//GET /adverts/tags 
 
 //opción actual: tags predefinidos (el usuario no puede crearlos)
 
 router.get("/tags", async (req, res, next) => {
   try {
     const tags = await Advert.allowedTags(preloadedTags);
-    // const tags = await Advert.tagsList();
+    // const tags = await Advert.tagsList();        //para devolver tags no-predefinidos usar esta línea en vez de la anterior
     res.json({ ok: true, tags });
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
   }
 });
 
-//GET /adverts/paymentMethods
+//GET /adverts/paymentMethods devuelve los métodos de pago predefinidos 
 
 router.get("/paymentMethods", async (req, res, next) => {
   try {

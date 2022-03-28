@@ -33,9 +33,9 @@ const advertSchema = Schema({
   offerAdvert: { type: Boolean },
   description: { type: String, validate: descriptionValidations },
   price: { type: Number, validate: priceValidations },
-  paymentMethods: { type: [String], validate: paymentMethodsValidations },
+  paymentMethods: { type: [String], /* validate: paymentMethodsValidations */ },
   tags: { type: [String], validate: tagsValidations },
-  experience: { type: Number /* , validate: experienceValidations */ },
+  experience: { type: Number  /* , validate: experienceValidations */ },
   advertImage: { type: String, pictureValidations },
   advertCreator: { type: ObjectId },
   createdBy: { type: { String } },
@@ -89,9 +89,8 @@ advertSchema.methods.setPicture = async function ({
   const imagePublicPath = path.join(__dirname, '../uploads', imageOriginalName);
   await fs.copy(imagePath, imagePublicPath);
 
-  // this.advertImage = imageOriginalName;
-  this.advertImage = imagePath;
-
+  this.advertImage = imageOriginalName;   
+  
   // Create thumbnail
   thumbnailRequester.send({ type: 'createThumbnail', image: imagePublicPath });
 };
