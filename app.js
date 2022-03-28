@@ -16,7 +16,67 @@ require('./models/connectMongoose');
 require('./models/User');
 require('./models/Advert');
 
+require('./models/Chat');
+
 const app = express();
+
+const http = require('http')
+const servidor = http.createServer(app)
+const socketio = require("socket.io");
+
+const io = socketio(servidor, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ["GET", "POST"],
+    credentials: true,
+  }
+});
+
+//Funcionalidad de socket.io en el servidor
+io.on("connection", (socket) => {
+  let user;
+  let iddef = ''
+  socket.on("conectado", (info) => {
+    iddef = info[1]
+    socket.join(info[1])
+    user = info[0];
+    //socket.broadcast.emit manda el message a todos los clientes excepto al que ha enviado el message
+    socket.emit("messages", {
+      user: user,
+      message: `${user} se ha conectado`,
+      chatConexion: true,
+    });
+  });
+
+  socket.on("message", (user, message, id) => {
+    //io.emit manda el message a todos los clientes conectados al chat
+    io.to(id).emit("messages", { user, message });
+  });
+
+  socket.on("disconnect", () => {
+    io.to(iddef).emit("messages", {
+      servidor: "Servidor",
+      message: `${user} ha abandonado la sala`,
+      chatConexion: false,
+    });
+  });
+});
+
+servidor.listen(5000, () => console.log("Servidor inicializado"));
+//CHAT BEA FIN //
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+if (process.env.LOG_FORMAT !== 'nolog') {
+  app.use(logger(process.env.LOG_FORMAT || 'dev'));
+}
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,8 +103,10 @@ app.use(
 
 //routes
 
+
 app.use('/auth/', require('./routes/users'));
 app.use('/adverts', require('./routes/adverts'));
+app.use('/chat', require('./routes/chat'));
 
 //const router = require('./routes/adverts');
 
