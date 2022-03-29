@@ -4,6 +4,23 @@ const {Chat, Message} = require("../models/Chat");
 
 const router = express.Router();
 
+
+// Devuelve los chats a los que pertenecen a un usuario
+router.get('/allchats/:user', async function (req, res, next) {
+  
+  const fields = req.body.user;
+  console.log(fields)
+  try {
+    const chatinfo = await Chat.find({}, function (err, chats) {
+      res.send(chats);
+  });
+    //res.json(newChat);
+  } catch (err) {
+    next(err);
+  }
+})
+
+
 // Crear chat
 router.post("/create", async function (req, res, next) {
   try {
@@ -53,18 +70,6 @@ router.get("/", async function (req, res, next) {
 });
 
 //devuelve los chats a los que pertenece un usuario
-/*
-router.get('/:user', async function (req, res, next) {
-  try {
-    const chatinfo = await Chat.find({}, function (err, chats) {
-      res.send(chats);
-  });
-    //res.json(newChat);
-  } catch (err) {
-    next(err);
-  }
-})
-*/
 
 //eliminar TODOS LOS CHATS
 router.delete('/', async function (req, res, next) {

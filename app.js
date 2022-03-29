@@ -27,7 +27,7 @@ const { Console } = require('console');
 
 const io = socketio(servidor, {
   cors: {
-    origin: 'http://3.225.90.239/:3000',
+    origin: 'http://localhost:3000',
     methods: ["GET", "POST"],
     credentials: true,
   }
@@ -45,11 +45,12 @@ io.on("connection", (socket) => {
     socket.emit("messages", {
       user: user,
       message: `${user} se ha conectado`,
-      chatConexion: true,
+      //chatConexion: true,
     });
   });
 
   socket.on("message", (user, message, id) => {
+    console.log(user, message, id)
     //io.emit manda el message a todos los clientes conectados al chat
     io.to(id).emit("messages", { user, message });
   });

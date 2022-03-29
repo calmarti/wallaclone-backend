@@ -30,6 +30,7 @@ const chatSchema = Schema({
     chatSeller: {type: String},
     chatBuyer: {type: String},
     chatMessage: {type: String},
+    product: { type: String },
 })
 
 messageSchema.set('timestamps', true);
