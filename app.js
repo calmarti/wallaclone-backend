@@ -23,10 +23,11 @@ const app = express();
 const http = require('http')
 const servidor = http.createServer(app)
 const socketio = require("socket.io");
+const { Console } = require('console');
 
 const io = socketio(servidor, {
   cors: {
-    origin: process.env.FRONT,
+    origin: 'http://3.225.90.239/:3000',
     methods: ["GET", "POST"],
     credentials: true,
   }
@@ -62,7 +63,7 @@ io.on("connection", (socket) => {
   });
 });
 
-servidor.listen(5000, () => console.log("Servidor inicializado"));
+servidor.listen(5000, () => console.log("Servidor Socket Iniciado"));
 //CHAT BEA FIN //
 
 // view engine setup
