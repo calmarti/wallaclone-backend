@@ -44,7 +44,7 @@ io.on("connection", (socket) => {
     //socket.broadcast.emit manda el message a todos los clientes excepto al que ha enviado el message
     socket.emit("messages", {
       user: user,
-      message: `${user} se ha conectado`,
+      message: `Alguien se ha conectado al chat`,
       //chatConexion: true,
     });
   });
@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     io.to(iddef).emit("messages", {
       servidor: "Servidor",
-      message: `${user} ha abandonado la sala`,
+      message: `Ahora estás solo en el chat`,
       chatConexion: false,
     });
   });
