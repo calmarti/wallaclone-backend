@@ -5,7 +5,7 @@
       "offerAdvert": true,
       "price": 38,
       "description": "Ofrezco un servicio de calidad y al mejor precio",
-      "paymentMethod": [
+      "paymentMethods": [
         "cash"
       ],
       "tags": [
