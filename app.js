@@ -26,7 +26,7 @@ const socketio = require("socket.io");
 
 const io = socketio(servidor, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONT,
     methods: ["GET", "POST"],
     credentials: true,
   }
