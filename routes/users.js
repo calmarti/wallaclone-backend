@@ -62,10 +62,8 @@ router.post("/signin", async (req, res, next) => {
 router.get("/:id", async function (req, res, next) {
   try {
     const MSGchatId = req.params.id;
-    console.log(MSGchatId)
     const chatinfo = await User.find({_id: MSGchatId}, function (err, user) {
       res.send(user)
-      console.log(user)
   });
   } catch (err) {
     next(err);

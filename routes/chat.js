@@ -9,7 +9,6 @@ const router = express.Router();
 router.get('/allchats/:user', async function (req, res, next) {
   
   const fields = req.body.user;
-  console.log(fields)
   try {
     const chatinfo = await Chat.find({}, function (err, chats) {
       res.send(chats);
