@@ -23,10 +23,11 @@ const app = express();
 const http = require('http')
 const servidor = http.createServer(app)
 const socketio = require("socket.io");
+const { Console } = require('console');
 
 const io = socketio(servidor, {
   cors: {
-    origin: process.env.FRONT,
+    origin: 'http://3.225.90.239:3000',
     methods: ["GET", "POST"],
     credentials: true,
   }
@@ -43,12 +44,13 @@ io.on("connection", (socket) => {
     //socket.broadcast.emit manda el message a todos los clientes excepto al que ha enviado el message
     socket.emit("messages", {
       user: user,
-      message: `${user} se ha conectado`,
-      chatConexion: true,
+      message: `Alguien se ha conectado al chat`,
+      //chatConexion: true,
     });
   });
 
   socket.on("message", (user, message, id) => {
+    console.log(user, message, id)
     //io.emit manda el message a todos los clientes conectados al chat
     io.to(id).emit("messages", { user, message });
   });
@@ -56,13 +58,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     io.to(iddef).emit("messages", {
       servidor: "Servidor",
-      message: `${user} ha abandonado la sala`,
+      message: `Ahora estás solo en el chat`,
       chatConexion: false,
     });
   });
 });
 
-servidor.listen(5000, () => console.log("Servidor inicializado"));
+servidor.listen(5000, () => console.log("Servidor Socket Iniciado"));
 //CHAT BEA FIN //
 
 // view engine setup

@@ -99,7 +99,6 @@ advertSchema.methods.setPicture = async function ({
 
 advertSchema.statics.cargaJson = async function (fichero) {
   const data = await fsPromises.readFile(fichero, { encoding: 'utf8' });
-  console.log('data', data);
   if (!data) {
     throw new Error(fichero + ' está vacio!');
   }
