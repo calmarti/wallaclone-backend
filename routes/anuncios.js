@@ -30,7 +30,7 @@ router.get("/", async function (req, res, next) {
     priceRangeFilter(price, filters); //filtro auxiliar para el rango de precios
 
     const paymentMethods = req.query.paymentmethod;
-    if (paymentMethods){console.log("!!!! " + paymentMethods); filters.paymentMethods = paymentMethods;}
+    if (paymentMethods){ filters.paymentMethods = paymentMethods;}
 
     const tags = req.query.tags;
     if (tags) filters.tags = tags;

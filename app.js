@@ -50,7 +50,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (user, message, id) => {
-    console.log(user, message, id)
     //io.emit manda el message a todos los clientes conectados al chat
     io.to(id).emit("messages", { user, message });
   });
