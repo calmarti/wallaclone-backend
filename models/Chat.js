@@ -27,10 +27,10 @@ const messageSchema = Schema({
 
 const chatSchema = Schema({
     chatId: { type: String, unique: true, index: true },
-    chatSeller: {type: String},
-    chatBuyer: {type: String},
+    chatSeller: {type: String, required: true,},
+    chatBuyer: {type: String, required: true,},
     chatMessage: {type: String},
-    product: { type: String },
+    product: { type: String, required: true, },
 })
 
 messageSchema.set('timestamps', true);
