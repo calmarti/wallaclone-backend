@@ -8,12 +8,18 @@ const router = express.Router();
 // Devuelve los chats a los que pertenecen a un usuario
 router.get('/allchats/:user', async function (req, res, next) {
   
-  const fields = req.body.user;
+  const fields = req.params.user;
+
+  let allmychats = [] 
+
   try {
-    const chatinfo = await Chat.find({}, function (err, chats) {
-      res.send(chats);
-  });
-    //res.json(newChat);
+    const chatseller = await Chat.find({chatSeller: fields}, function (err, chats) {
+      allmychats.push(chats);
+    });
+    const chatbuyer = await Chat.find({chatBuyer: fields}, function (err, chats) {
+      allmychats.push(chats);
+    });
+    res.send(allmychats)
   } catch (err) {
     next(err);
   }
