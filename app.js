@@ -27,7 +27,7 @@ const { Console } = require('console');
 
 const io = socketio(servidor, {
   cors: {
-    origin: 'http://3.225.90.239:3000',
+    origin: '*',
     methods: ["GET", "POST"],
     credentials: true,
   }
