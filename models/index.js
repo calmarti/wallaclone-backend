@@ -3,4 +3,5 @@ module.exports = {
   connectMongoose: require('./connectMongoose'),
   Advert: require('./Advert'),
   User: require('./User'),
+  UserProfile: require('./UserProfile'),
 };

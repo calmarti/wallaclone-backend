@@ -1,19 +1,18 @@
-"use strict";
+'use strict';
 
-const express = require("express");
-const upload = require("../lib/multerConfig");
-const Advert = require("../models/Advert");
-const { User } = require("../models");
+const express = require('express');
+const upload = require('../lib/multerConfig');
+const Advert = require('../models/Advert');
+const { User } = require('../models');
 
-const { nameFilter, priceRangeFilter } = require("../lib/utils");
-const { sanitizeAdvertParams } = require("../utils/sanitize_params");
-const jwtAuth = require("../lib/jwtAuth");
-const { filter } = require("async");
+const { nameFilter, priceRangeFilter } = require('../lib/utils');
+const { sanitizeAdvertParams } = require('../utils/sanitize_params');
+const jwtAuth = require('../lib/jwtAuth');
+const { filter } = require('async');
 const {
   tags: preloadedTags,
   paymentMethods: preloadedPaymentMethods,
-} = require("../preloadedValues");
-
+} = require('../preloadedValues');
 const router = express.Router();
 //const protectedRouter = express.Router();
 
@@ -63,7 +62,7 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-//GET /adverts/tags 
+//GET /adverts/tags
 
 //opción actual: tags predefinidos (el usuario no puede crearlos)
 
@@ -77,9 +76,9 @@ router.get("/tags", async (req, res, next) => {
   }
 });
 
-//GET /adverts/paymentMethods devuelve los métodos de pago predefinidos 
+//GET /adverts/paymentMethods devuelve los métodos de pago predefinidos
 
-router.get("/paymentMethods", async (req, res, next) => {
+router.get('/paymentMethods', async (req, res, next) => {
   try {
     const paymentMethods = await Advert.allowedPaymentMethods(
       preloadedPaymentMethods
@@ -114,7 +113,7 @@ router.post(
   upload.single("advertImage"),
   async (req, res, next) => {
     try {
-      console.log("file", req.file);
+      console.log('file', req.file);
       // const advertParams = sanitizeAdvertParams(req.body);     // sanitazion comentado temporalmente para poder crear anuncio
       const user = await User.findOne({ _id: req.decodedUser._id });
       const advert = new Advert({

@@ -12,4 +12,17 @@ const sanitizeAdvertParams = (params) => {
     offerAdvert: params.offerAdvert || false,
   };
 };
-module.exports = { sanitizeAdvertParams };
+
+const sanitizeUserProfileParams = (params) => {
+  return {
+    name: params.name || '',
+    phone: params.phone || '',
+    description: params.description || '',
+    url: params.url || '',
+    userImage: params.userImage || '',
+    rating: params.rating || 0,
+    cv: params.cv || '',
+  };
+};
+
+module.exports = { sanitizeAdvertParams, sanitizeUserProfileParams };

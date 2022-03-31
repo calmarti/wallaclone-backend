@@ -1,6 +1,5 @@
 'use strict';
 
-
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -86,6 +85,7 @@ app.set('view engine', 'ejs');
 if (process.env.LOG_FORMAT !== 'nolog') {
   app.use(logger(process.env.LOG_FORMAT || 'dev'));
 }
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
