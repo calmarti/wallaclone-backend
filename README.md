@@ -56,3 +56,6 @@ Loading...
     GET /anuncios?paymentmethod=nombredelmediodepago
     
     
+### -Mostrado de imágenes
+
+la ruta /images/ busca directamente en la carpeta uploads
