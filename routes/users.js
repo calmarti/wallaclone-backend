@@ -107,4 +107,21 @@ router.get('/me', jwtAuth(), upload.any(), async (req, res, next) => {
   }
 });
 
+//GET /auth/me Devuelve datos del usuario (id, email, userName) basado en el token
+
+router.get('/get-user/:id', jwtAuth(), upload.any(), async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findOne({
+      _id: userId,
+    });
+    res.json({
+      ok: true,
+      userName: user.userName,
+      email: user.email,
+    });
+  } catch (err) {
+    res.status(500).json({ ok: false, result: 'user not found' });
+  }
+});
 module.exports = router;
