@@ -113,6 +113,7 @@ router.post(
   upload.single("advertImage"),
   async (req, res, next) => {
     try {
+      
       console.log('file', req.file);
       // const advertParams = sanitizeAdvertParams(req.body);     // sanitazion comentado temporalmente para poder crear anuncio
       const user = await User.findOne({ _id: req.decodedUser._id });
@@ -175,20 +176,18 @@ router.put("/update_favorites/", jwtAuth(), async (req, res, next) => {
 
 //PUT /adverts/delete/:id Borrado lógico de anuncio
 
-router.put("/delete/", jwtAuth(), async (req, res, next) => {
+router.delete("/delete/:id", jwtAuth(), async (req, res, next) => {
+  console.log('delete')
   try {
+    console.log(req.params)
     const { advertId } = req.body;
+    console.log(req.body)
     const user = await User.findOne({ _id: req.decodedUser._id });
-    const deletedAdvert = await Advert.findOneAndUpdate(
-      { _id: advertId },
-      {
-        updatedBy: user.name,
-        publishState: false,
-      },
-      {
-        new: true,
-      }
-    );
+    const deletedAdvert = await Advert.deleteOne({ _id: advertId }, function (err, chats) {
+    console.log('eliminado')
+    res.json({ ok: true, result: { chats } });
+  });
+  
     if (!deletedAdvert) {
       res.status(404).json({
         ok: false,
@@ -196,10 +195,9 @@ router.put("/delete/", jwtAuth(), async (req, res, next) => {
       });
       return;
     }
-    const { _id } = deletedAdvert;
-    res.json({ ok: true, result: { _id } });
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
+    console.log(err)
   }
 });
 
