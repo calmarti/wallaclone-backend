@@ -2,10 +2,11 @@
 
 const express = require("express");
 
-//const upload = require('../lib/multerConfig');
+const upload = require('../lib/multerConfig');
 const router = express.Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const jwtAuth = require("../lib/jwtAuth");
 
 //TODO: extender a subida de la imagen
 

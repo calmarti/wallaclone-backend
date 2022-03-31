@@ -176,18 +176,20 @@ router.put("/update_favorites/", jwtAuth(), async (req, res, next) => {
 
 //PUT /adverts/delete/:id Borrado lógico de anuncio
 
-router.delete("/delete/:id", jwtAuth(), async (req, res, next) => {
-  console.log('delete')
+router.put("/delete/:id", jwtAuth(), async (req, res, next) => {
   try {
-    console.log(req.params)
-    const { advertId } = req.body;
-    console.log(req.body)
+    const { advertId } = req.params.id;
     const user = await User.findOne({ _id: req.decodedUser._id });
-    const deletedAdvert = await Advert.deleteOne({ _id: advertId }, function (err, chats) {
-    console.log('eliminado')
-    res.json({ ok: true, result: { chats } });
-  });
-  
+    const deletedAdvert = await Advert.findOneAndUpdate(
+      { _id: advertId, advertCreator: user._id },
+      {
+        updatedBy: user.name,
+        publishState: false,
+      },
+      {
+        new: true,
+      }
+    );
     if (!deletedAdvert) {
       res.status(404).json({
         ok: false,
@@ -195,12 +197,12 @@ router.delete("/delete/:id", jwtAuth(), async (req, res, next) => {
       });
       return;
     }
+    const { _id } = deletedAdvert;
+    res.json({ ok: true, result: { _id } });
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
-    console.log(err)
   }
 });
-
 //PUT /adverts/:id Modificar un Anuncio
 
 router.put("/:id", jwtAuth(), async (req, res, next) => {
