@@ -10,16 +10,25 @@ router.get('/allchats/:user', async function (req, res, next) {
   
   const fields = req.params.user;
 
-  let allmychats = [] 
+  let allmychats = []
 
   try {
     const chatseller = await Chat.find({chatSeller: fields}, function (err, chats) {
-      allmychats.push(chats);
+      if(chats == ''){
+        console.log('vacio')
+      } else{
+        allmychats.push(chats);
+      }
     });
     const chatbuyer = await Chat.find({chatBuyer: fields}, function (err, chats) {
-      allmychats.push(chats);
+      if(chats == ''){
+        console.log('vacio')
+      } else{
+        allmychats.push(chats);
+      }
     });
     res.send(allmychats)
+    console.log(allmychats)
   } catch (err) {
     next(err);
   }
