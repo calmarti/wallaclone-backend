@@ -9,6 +9,10 @@ const { nameFilter, priceRangeFilter } = require('../lib/utils');
 const { sanitizeAdvertParams } = require('../utils/sanitize_params');
 const jwtAuth = require('../lib/jwtAuth');
 const { filter } = require('async');
+const {
+  tags: preloadedTags,
+  paymentMethods: preloadedPaymentMethods,
+} = require('../preloadedValues');
 
 const router = express.Router();
 //const protectedRouter = express.Router();
@@ -35,8 +39,8 @@ router.get('/', async function (req, res, next) {
     const price = req.query.price;
     priceRangeFilter(price, filters); //filtro auxiliar para el rango de precios
 
-    const paymentMethod = req.query.paymentmethod;
-    if (paymentMethod) filters.paymentMethod = paymentMethod;
+    const paymentMethods = req.query.paymentmethod;
+    if (paymentMethods) filters.paymentMethods = paymentMethods;
 
     const tags = req.query.tags;
     if (tags) filters.tags = tags;
@@ -59,15 +63,28 @@ router.get('/', async function (req, res, next) {
   }
 });
 
-//GET /adverts/tags Devuelve los tags usados en los anuncios existentes
-//Otra opción: usar tags predefinidos (el usuario no podría crearlos)
+//GET /adverts/tags
+
+//opción actual: tags predefinidos (el usuario no puede crearlos)
 
 router.get('/tags', async (req, res, next) => {
   try {
-    // const tags = await Advert.allowedTags()
-    const tags = await Advert.tagsList();
-    res.json({ ok: true, result: tags });
-    // res.json({ ok: true, allowedTags: Anuncio.allowedTags() })
+    const tags = await Advert.allowedTags(preloadedTags);
+    // const tags = await Advert.tagsList();        //para devolver tags no-predefinidos usar esta línea en vez de la anterior
+    res.json({ ok: true, tags });
+  } catch (err) {
+    res.status(500).json({ ok: false, result: err.message });
+  }
+});
+
+//GET /adverts/paymentMethods devuelve los métodos de pago predefinidos
+
+router.get('/paymentMethods', async (req, res, next) => {
+  try {
+    const paymentMethods = await Advert.allowedPaymentMethods(
+      preloadedPaymentMethods
+    );
+    res.json({ ok: true, result: paymentMethods });
   } catch (err) {
     res.status(500).json({ ok: false, result: err.message });
   }
@@ -97,21 +114,21 @@ router.post(
   upload.single('advertImage'),
   async (req, res, next) => {
     try {
-      const advertParams = sanitizeAdvertParams(req.body);
-      console.log('advert', req.file);
+      console.log('file', req.file);
+      // const advertParams = sanitizeAdvertParams(req.body);     // sanitazion comentado temporalmente para poder crear anuncio
       const user = await User.findOne({ _id: req.decodedUser._id });
       const advert = new Advert({
         advertCreator: req.decodedUser._id,
-        createdBy: user.name,
-        updatedBy: user.name,
-        ...advertParams,
+        createdBy: user.userName,
+        updatedBy: user.userName,
+        ...req.body,
+        // ...advertParams,
       });
-      await advert.setPicture(req.file);
+      await advert.setPicture(req.file); // comentado para que funcione mientras no haya subida de imagen desde el front
       const saved = await advert.save();
-
       res.json({ ok: true, result: saved });
     } catch (err) {
-      res.status(500).json({ ok: false, result: err.message });
+      res.status(500).json({ ok: false, result: err });
       //next(err);
     }
   }
