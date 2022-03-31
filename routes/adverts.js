@@ -220,7 +220,7 @@ router.put("/:id", jwtAuth(), async (req, res, next) => {
     if (!updatedAdvert) {
       res.status(404).json({
         ok: false,
-        error: "No se pudo actualizar o no se encontró el anuncio",
+        error: "No se pudo actualizar o no se encontró el anuncio requerido",
       });
       return;
     }
