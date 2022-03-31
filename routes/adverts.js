@@ -178,7 +178,7 @@ router.put("/update_favorites/", jwtAuth(), async (req, res, next) => {
 
 router.put("/delete/:id", jwtAuth(), async (req, res, next) => {
   try {
-    const { advertId } = req.params.id;
+    const { advertId } = req.params;
     const user = await User.findOne({ _id: req.decodedUser._id });
     const deletedAdvert = await Advert.findOneAndUpdate(
       { _id: advertId },
