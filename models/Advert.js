@@ -90,8 +90,8 @@ advertSchema.methods.setPicture = async function ({
   const imagePublicPath = path.join(__dirname, '../uploads', imageOriginalName);
   await fs.copy(imagePath, imagePublicPath);
 
-  this.advertImage = imageOriginalName;
-
+  this.advertImage = imageOriginalName;   
+  
   // Create thumbnail
   thumbnailRequester.send({ type: 'createThumbnail', image: imagePublicPath });
 };

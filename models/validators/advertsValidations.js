@@ -52,20 +52,20 @@ const tagsValidations = [
 ];
 
 //Validations for advert's experience property
-const experienceValidations = [
-  {
-    validator: (experience) => experience !== '',
-    message: 'Debe contener experiencia',
-  },
-  {
-    validator: (experience) => isNaN(experience) === false,
-    message: 'Experiencia debe ser un número',
-  },
-  {
-    validator: (experience) => experience > 0 && experience < 11,
-    message: 'Experiencia debe ser entre 1 y 10',
-  },
-];
+// const experienceValidations = [
+//   {
+//     validator: (experience) => experience !== '',
+//     message: 'Debe contener experiencia',
+//   },
+//   {
+//     validator: (experience) => isNaN(experience) === false,
+//     message: 'Experiencia debe ser un número',
+//   },
+//   {
+//     validator: (experience) => experience > 0 && experience < 11,
+//     message: 'Experiencia debe ser entre 1 y 10',
+//   },
+// ];
 
 //Validations for advert's experience property
 const paymentMethodsValidations = [
@@ -85,6 +85,6 @@ module.exports = {
   priceValidations,
   pictureValidations,
   tagsValidations,
-  experienceValidations,
+  // experienceValidations,
   paymentMethodsValidations,
 };

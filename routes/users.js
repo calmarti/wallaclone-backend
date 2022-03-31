@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-const express = require('express');
+const express = require("express");
 
 //const upload = require('../lib/multerConfig');
 const router = express.Router();
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
 //TODO: extender a subida de la imagen
 
-router.post('/signup' /* upload.single('foto'), */, async (req, res, next) => {
+router.post("/signup" /* upload.single('foto'), */, async (req, res, next) => {
   try {
     const hashedPassword = User.hashPassword(req.body.password);
     const fields = { ...req.body, password: hashedPassword };
     const newUser = await User.create(fields);
-    // res.json({ ok: true, result: newUser });
+   // res.json({ ok: true, result: newUser });
     const saved = await newUser.save();
     res.status(201).json({ ok: true, result: saved });
   } catch (err) {
@@ -36,7 +36,7 @@ router.post('/signin', async (req, res, next) => {
     const user = await User.findOne(user_credentials);
 
     if (!user) {
-      res.status(500).json({ ok: false, error: 'invalid credentials' });
+      res.status(500).json({ ok: false, error: "invalid credentials" });
       return;
     }
 
