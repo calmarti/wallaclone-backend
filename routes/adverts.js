@@ -181,7 +181,7 @@ router.put("/delete/:id", jwtAuth(), async (req, res, next) => {
     const { advertId } = req.params.id;
     const user = await User.findOne({ _id: req.decodedUser._id });
     const deletedAdvert = await Advert.findOneAndUpdate(
-      { _id: advertId, advertCreator: user._id },
+      { _id: advertId },
       {
         updatedBy: user.name,
         publishState: false,
