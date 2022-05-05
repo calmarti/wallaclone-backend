@@ -1,5 +1,6 @@
 'use strict';
 
+
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -103,7 +104,6 @@ app.use(
 );
 
 //routes
-
 
 app.use('/auth/', require('./routes/users'));
 app.use('/adverts', require('./routes/adverts'));
