@@ -16,7 +16,7 @@ const userSchema = Schema({
   userName: {
     type: String,
     required: false,
-    unique: true,
+    unique: false,
     index: true,
     // validate: userNameValidations,
   },

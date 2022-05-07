@@ -10,8 +10,10 @@ const jwtAuth = require("../lib/jwtAuth");
 
 //TODO: extender a subida de la imagen
 
-router.post("/signup" /* upload.single('foto'), */, async (req, res, next) => {
+router.post("/signup",  /* upload.single('foto'), */ async (req, res, next) => {
+  console.log("1");
   try {
+    console.log(req.body);
     const hashedPassword = User.hashPassword(req.body.password);
     const fields = { ...req.body, password: hashedPassword };
     const newUser = await User.create(fields);
@@ -62,32 +64,33 @@ router.post('/login', async (req, res, next) => {
 
 
 
-router.get('/:id', async function (req, res, next) {
-  try {
-    const MSGchatId = req.params.id;
-    const chatinfo = await User.find({ _id: MSGchatId }, function (err, user) {
-      res.send(user);
-    });
-  } catch (err) {
-    next(err);
-  }
-});
+// router.get('/:id', async function (req, res, next) {
+//   try {
+//     const MSGchatId = req.params.id;
+//     const chatinfo = await User.find({ _id: MSGchatId }, function (err, user) {
+//       res.send(user);
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 //GET /auth/me Devuelve datos del usuario (id, email, userName) basado en el token
 
-router.get('/get-user/:id', jwtAuth(), upload.any(), async (req, res, next) => {
-  try {
-    const userId = req.params.id;
-    const user = await User.findOne({
-      _id: userId,
-    });
-    res.json({
-      ok: true,
-      userName: user.userName,
-      email: user.email,
-    });
-  } catch (err) {
-    res.status(500).json({ ok: false, result: 'user not found' });
-  }
-});
+// router.get('/get-user/:id', jwtAuth(), upload.any(), async (req, res, next) => {
+//   try {
+//     const userId = req.params.id;
+//     const user = await User.findOne({
+//       _id: userId,
+//     });
+//     res.json({
+//       ok: true,
+//       userName: user.userName,
+//       email: user.email,
+//     });
+//   } catch (err) {
+//     res.status(500).json({ ok: false, result: 'user not found' });
+//   }
+// });
+
 module.exports = router;
