@@ -1,66 +1,59 @@
-'use strict';
+"use strict";
 
-const mongoose = require('mongoose');
-const cote = require('cote');
+const mongoose = require("mongoose");
+const cote = require("cote");
 
 const thumbnailRequester = new cote.Requester(
   {
-    name: 'thumbnail creator client',
+    name: "thumbnail creator client",
   },
   { log: false, statusLogsEnabled: false }
 );
 
-const fsPromises = require('fs').promises;
-const fs = require('fs-extra');
-const path = require('path');
+const fsPromises = require("fs").promises;
+const fs = require("fs-extra");
+const path = require("path");
 
-const {
-  nameValidations,
-  priceValidations,
-  pictureValidations,
-  tagsValidations,
-  descriptionValidations,
-  experienceValidations,
-  paymentMethodsValidations,
-} = require('./validators');
+// const {
+//   nameValidations,
+//   priceValidations,
+//   pictureValidations,
+//   tagsValidations,
+//   descriptionValidations,
+//   experienceValidations,
+//   paymentMethodsValidations,
+// } = require('./validators');
 
 const Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 const advertSchema = Schema({
-  name: { type: String, validate: nameValidations, index: true },
-  offerAdvert: { type: Boolean },
-  description: { type: String, validate: descriptionValidations },
-  price: { type: Number, validate: priceValidations },
-  paymentMethods: { type: [String] /* validate: paymentMethodsValidations */ },
-  tags: { type: [String], validate: tagsValidations },
-  experience: { type: Number /* , validate: experienceValidations */ },
-  advertImage: { type: String, pictureValidations },
-  advertCreator: { type: ObjectId },
-  createdBy: { type: { String } },
-  publishState: { type: Boolean, default: true },
+  name: { type: String, /* validate: nameValidations, */ index: true },
+  price: { type: Number /* validate: priceValidations  */ },
+  sale: { type: Boolean },
+  tags: { type: [String] },
+  photo: {type: String},
+  // description: { type: String, /* validate: descriptionValidations */ },
+  // paymentMethods: { type: [String] /* validate: paymentMethodsValidations */ },
+  // tags: { type: [String], /* validate: tagsValidations */ },
+  // experience: { type: Number /* , validate: experienceValidations */ },
+  // advertCreator: { type: ObjectId },
+  // createdBy: { type: { String } },
+  // advertImage: { type: String /* pictureValidations */ },
+  // publishState: { type: Boolean, default: true },
   updatedAt: { type: Date },
-  updatedBy: { type: String },
-  // underlinePart: {type: [String] },
+  // updatedBy: { type: String },
 });
 
-advertSchema.set('timestamps', true);
+advertSchema.set("timestamps", true);
 
 //Valores predefinidos de los tags
 advertSchema.statics.allowedTags = function (preloadedTags) {
   return preloadedTags;
 };
 
-//Valores predefinidos de los paymentMethods
-advertSchema.statics.allowedPaymentMethods = function (
-  preloadedPaymentMethods
-) {
-  return preloadedPaymentMethods;
-};
-
 //Corre las validaciones al actualizar un anuncio para evitar que no se cumplan
-
-advertSchema.pre('findOneAndUpdate', function (next) {
+advertSchema.pre("findOneAndUpdate", function (next) {
   this.options.runValidators = true;
   next();
 });
@@ -72,7 +65,7 @@ advertSchema.statics.customFind = function (
   /* sort, */ select
 ) {
   const query = Advert.find(filters);
-  query.sort([['createdAt', -1]]);
+  query.sort([["createdAt", -1]]);
   query.skip(skip);
   query.limit(limit);
   query.select(select);
@@ -87,21 +80,21 @@ advertSchema.methods.setPicture = async function ({
   originalname: imageOriginalName,
 }) {
   if (!imageOriginalName) return;
-  const imagePublicPath = path.join(__dirname, '../uploads', imageOriginalName);
+  const imagePublicPath = path.join(__dirname, "../uploads", imageOriginalName);
   await fs.copy(imagePath, imagePublicPath);
 
-  this.advertImage = imageOriginalName;   
-  
+  this.advertImage = imageOriginalName;
+
   // Create thumbnail
-  thumbnailRequester.send({ type: 'createThumbnail', image: imagePublicPath });
+  thumbnailRequester.send({ type: "createThumbnail", image: imagePublicPath });
 };
 
 // Código extra para inicializar con install_db.js (no indispensable)
 
 advertSchema.statics.cargaJson = async function (fichero) {
-  const data = await fsPromises.readFile(fichero, { encoding: 'utf8' });
+  const data = await fsPromises.readFile(fichero, { encoding: "utf8" });
   if (!data) {
-    throw new Error(fichero + ' está vacio!');
+    throw new Error(fichero + " está vacio!");
   }
 
   const adverts = JSON.parse(data).adverts;
@@ -113,11 +106,11 @@ advertSchema.statics.cargaJson = async function (fichero) {
 };
 
 advertSchema.statics.tagsList = async function () {
-  const query = Advert.distinct('tags');
+  const query = Advert.distinct("tags");
   const tags = query.exec();
   return tags;
 };
 
-const Advert = mongoose.model('Advert', advertSchema);
+const Advert = mongoose.model("Advert", advertSchema);
 
 module.exports = Advert;

@@ -31,23 +31,22 @@ router.get("/", async function (req, res, next) {
     // str = name.replace(/[aeiouèéêëáàäâìíîïòóôöùúûü]/, '.');
     nameFilter(name, filters); //filtro auxiliar por primeras letras del nombre
 
-    const offerAdvert = req.query.offeradvert;
+    const sale = req.query.sale;
 
-    if (offerAdvert) filters.offerAdvert = offerAdvert;
+    if (sale) filters.sale = sale;
 
     const price = req.query.price;
     priceRangeFilter(price, filters); //filtro auxiliar para el rango de precios
 
-    const paymentMethods = req.query.paymentmethod;
-    if (paymentMethods) filters.paymentMethods = paymentMethods;
+    // const paymentMethods = req.query.paymentmethod;
+    // if (paymentMethods) filters.paymentMethods = paymentMethods;
 
     const tags = req.query.tags;
     if (tags) filters.tags = tags;
 
-    const experience = req.query.experience;
-    if (experience) filters.experience = experience;
+    // const experience = req.query.experience;
+    // if (experience) filters.experience = experience;
 
-    //TODO: falta el filtro de advertCreator
 
     const adverts = await Advert.customFind(
       filters,
@@ -76,41 +75,11 @@ router.get("/tags", async (req, res, next) => {
   }
 });
 
-//GET /adverts/paymentMethods devuelve los métodos de pago predefinidos
-
-router.get('/paymentMethods', async (req, res, next) => {
-  try {
-    const paymentMethods = await Advert.allowedPaymentMethods(
-      preloadedPaymentMethods
-    );
-    res.json({ ok: true, result: paymentMethods });
-  } catch (err) {
-    res.status(500).json({ ok: false, result: err.message });
-  }
-});
-
-//GET /adverts/favorites Devuelve Avisos favoritos de un usuario
-
-router.get("/favorites", jwtAuth(), async (req, res, next) => {
-  try {
-    const { query, decodedUser } = req;
-    const user = await User.find({
-      _id: query.userId || decodedUser._id,
-    });
-    const adverts = await Advert.find({
-      _id: user[0].favorites,
-    });
-    res.json({ ok: true, result: adverts });
-  } catch (err) {
-    res.status(500).json({ ok: false, result: err.message });
-  }
-});
-
 //POST /adverts/ Crear un nuevo Anuncio
 router.post(
   "/",
   jwtAuth(),
-  upload.single("advertImage"),
+  upload.single("photo"),
   async (req, res, next) => {
     try {
       
@@ -124,7 +93,7 @@ router.post(
         ...req.body,
         // ...advertParams,
       });
-      await advert.setPicture(req.file); // comentado para que funcione mientras no haya subida de imagen desde el front
+      // await advert.setPicture(req.file); // comentado para que funcione mientras no haya subida de imagen desde el front
       const saved = await advert.save();
       res.json({ ok: true, result: saved });
     } catch (err) {
@@ -134,45 +103,77 @@ router.post(
   }
 );
 
+//GET /adverts/paymentMethods devuelve los métodos de pago predefinidos
+
+// router.get('/paymentMethods', async (req, res, next) => {
+//   try {
+//     const paymentMethods = await Advert.allowedPaymentMethods(
+//       preloadedPaymentMethods
+//     );
+//     res.json({ ok: true, result: paymentMethods });
+//   } catch (err) {
+//     res.status(500).json({ ok: false, result: err.message });
+//   }
+// });
+
+//GET /adverts/favorites Devuelve Avisos favoritos de un usuario
+
+// router.get("/favorites", jwtAuth(), async (req, res, next) => {
+//   try {
+//     const { query, decodedUser } = req;
+//     const user = await User.find({
+//       _id: query.userId || decodedUser._id,
+//     });
+//     const adverts = await Advert.find({
+//       _id: user[0].favorites,
+//     });
+//     res.json({ ok: true, result: adverts });
+//   } catch (err) {
+//     res.status(500).json({ ok: false, result: err.message });
+//   }
+// });
+
+
+
 //PUT /adverts/update_favorites Marca/Desmarca Anuncio como Favorito
 
-router.put("/update_favorites/", jwtAuth(), async (req, res, next) => {
-  try {
-    const user = await User.findOne({ _id: req.decodedUser._id });
-    const { advertId, setAsFavorite } = req.body;
-    let userFavorites = user.favorites;
-    if (!userFavorites.includes(advertId) && setAsFavorite) {
-      userFavorites = [...userFavorites, advertId];
-    }
-    if (!setAsFavorite) {
-      let index = userFavorites.indexOf(advertId);
-      if (index !== -1) {
-        userFavorites.splice(index, 1);
-      }
-    }
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: user._id },
-      {
-        updatedBy: user.name,
-        favorites: userFavorites,
-      },
-      {
-        new: true,
-      }
-    );
-    if (!updatedUser) {
-      res.status(404).json({
-        ok: false,
-        error: "No se pudo actualizar o no se encontró el usuario",
-      });
-      return;
-    }
-    const { _id, favorites } = updatedUser;
-    res.json({ ok: true, result: { _id, favorites } });
-  } catch (err) {
-    res.status(500).json({ ok: false, result: err.message });
-  }
-});
+// router.put("/update_favorites/", jwtAuth(), async (req, res, next) => {
+//   try {
+//     const user = await User.findOne({ _id: req.decodedUser._id });
+//     const { advertId, setAsFavorite } = req.body;
+//     let userFavorites = user.favorites;
+//     if (!userFavorites.includes(advertId) && setAsFavorite) {
+//       userFavorites = [...userFavorites, advertId];
+//     }
+//     if (!setAsFavorite) {
+//       let index = userFavorites.indexOf(advertId);
+//       if (index !== -1) {
+//         userFavorites.splice(index, 1);
+//       }
+//     }
+//     const updatedUser = await User.findOneAndUpdate(
+//       { _id: user._id },
+//       {
+//         updatedBy: user.name,
+//         favorites: userFavorites,
+//       },
+//       {
+//         new: true,
+//       }
+//     );
+//     if (!updatedUser) {
+//       res.status(404).json({
+//         ok: false,
+//         error: "No se pudo actualizar o no se encontró el usuario",
+//       });
+//       return;
+//     }
+//     const { _id, favorites } = updatedUser;
+//     res.json({ ok: true, result: { _id, favorites } });
+//   } catch (err) {
+//     res.status(500).json({ ok: false, result: err.message });
+//   }
+// });
 
 //PUT /adverts/delete/:id Borrado lógico de anuncio
 

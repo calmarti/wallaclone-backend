@@ -1,5 +1,6 @@
 'use strict';
 
+//TODO: ajustar GET /adverts
 
 require('dotenv').config();
 const express = require('express');
@@ -107,7 +108,7 @@ app.use(
 
 app.use('/api/auth',  require('./routes/users'));
 
-app.use('/adverts', require('./routes/adverts'));
+app.use('/api/adverts', require('./routes/adverts'));
 app.use('/chat', require('./routes/chat'));
 app.use('/images', require('./routes/images'));
 
