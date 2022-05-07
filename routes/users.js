@@ -8,7 +8,6 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const jwtAuth = require("../lib/jwtAuth");
 
-//TODO: extender a subida de la imagen
 
 router.post("/signup",  /* upload.single('foto'), */ async (req, res, next) => {
   console.log("1");
@@ -28,14 +27,15 @@ router.post("/signup",  /* upload.single('foto'), */ async (req, res, next) => {
 //router.post('/login', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
   try {
-    let email_userName = { email: req.body.email };
-    if (!req.body.email) {
-      email_userName = { userName: req.body.username };
-    }
+    // let email_userName = { email: req.body.email };
+    let email = req.body.email;
+    // if (!req.body.email) {
+    //   email_userName = { userName: req.body.username };
+    // }
     const password = req.body.password;
     const hashedPassword = User.hashPassword(password);
 
-    const user_credentials = { ...email_userName, password: hashedPassword };
+    const user_credentials = { email, password: hashedPassword };
     const user = await User.findOne(user_credentials);
 
     if (!user) {
@@ -44,7 +44,7 @@ router.post('/login', async (req, res, next) => {
     }
 
     jwt.sign(
-      { _id: user._id, ...email_userName },
+      { _id: user._id, ...email },
       process.env.JWT_SECRET,
       {
         expiresIn: '15d',

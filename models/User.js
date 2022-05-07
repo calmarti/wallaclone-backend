@@ -13,13 +13,16 @@ const Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 const userSchema = Schema({
-  userName: {
-    type: String,
-    required: false,
-    unique: false,
-    index: true,
-    // validate: userNameValidations,
-  },
+  // userName: {
+  //   type: String,
+  //   required: false,
+  //   unique: false,
+  //   index: true,
+  //   // validate: userNameValidations,
+  // },
+
+  // _id: ObjectId,
+
   email: {
     type: String,
     required: true,
