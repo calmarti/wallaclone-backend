@@ -3,11 +3,11 @@
 const mongoose = require('mongoose');
 var hash = require('hash.js');
 
-const {
-  userNameValidations,
-  emailValidations,
-  passwordValidations,
-} = require('./validators');
+// const {
+//   userNameValidations,
+//   emailValidations,
+//   passwordValidations,
+// } = require('./validators');
 
 const Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
@@ -15,19 +15,22 @@ const Schema = mongoose.Schema,
 const userSchema = Schema({
   userName: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
     index: true,
-    validate: userNameValidations,
+    // validate: userNameValidations,
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    validate: emailValidations,
+    // validate: emailValidations,
   },
-  password: { type: String, required: true, validate: passwordValidations },
-  favorites: { type: [ObjectId] },
+  password: { type: String, required: true  /* , validate: passwordValidations */ }
+  
+  // ,
+  // favorites: { type: [ObjectId] },
+
 });
 
 userSchema.statics.hashPassword = function (plain) {

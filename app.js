@@ -105,7 +105,8 @@ app.use(
 
 //routes
 
-app.use('/auth/', require('./routes/users'));
+app.use('api/auth/', require('./routes/users'));
+
 app.use('/adverts', require('./routes/adverts'));
 app.use('/chat', require('./routes/chat'));
 app.use('/images', require('./routes/images'));

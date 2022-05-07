@@ -24,7 +24,7 @@ router.post("/signup" /* upload.single('foto'), */, async (req, res, next) => {
 });
 
 //router.post('/login', async (req, res, next) => {
-router.post('/signin', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
   try {
     let email_userName = { email: req.body.email };
     if (!req.body.email) {
@@ -59,6 +59,8 @@ router.post('/signin', async (req, res, next) => {
     next(err);
   }
 });
+
+
 
 router.get('/:id', async function (req, res, next) {
   try {
