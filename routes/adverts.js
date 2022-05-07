@@ -93,7 +93,7 @@ router.post(
         ...req.body,
         // ...advertParams,
       });
-      // await advert.setPicture(req.file); // comentado para que funcione mientras no haya subida de imagen desde el front
+      await advert.setPicture(req.file); // comentado para que funcione mientras no haya subida de imagen desde el front
       const saved = await advert.save();
       res.json({ ok: true, result: saved });
     } catch (err) {
